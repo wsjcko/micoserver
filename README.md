@@ -296,8 +296,10 @@ git config --global http.extraheader "PRIVATE-TOKEN:ghp_Om71y3bTeIbHFkLULFgaIrEi
 git config --global url."git@github.com:wsjcko".insteadOf "https://github.com/wsjcko"
 
 git config --global url."git@github.com:wsjcko/user.git".insteadOf "https://github.com/wsjcko/user.git"
-git config --global url."git@github.com:wsjcko/micoserver.git".insteadOf "https://github.com/wsjcko/micoserver.git"
+go mod edit -replace="github.com/wsjcko/user =github.com/wsjcko/user@v1.0.0"
 
+git config --global url."git@github.com:wsjcko/micoserver.git".insteadOf "https://github.com/wsjcko/micoserver.git"
+go mod edit -replace="github.com/wsjcko/micoserver =github.com/wsjcko/micoserver@v1.0.0"
 go env -w GOPRIVATE=github.com
 
  cat ~/.gitconfig
