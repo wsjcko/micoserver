@@ -13,6 +13,7 @@ micro -v
 go install go-micro.dev/v4/cmd/protoc-gen-micro@master
 
 go install github.com/golang/protobuf/protoc-gen-go@master
+go install github.com/gogo/protobuf/protoc-gen-gofast
 go install github.com/golang/protobuf/proto@master 
 go get -u -v google.golang.org/grpc
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@master
@@ -78,6 +79,8 @@ a28ea788bfc8   mysql:5.7
 
 docker images 查看本地images
 docker images nginx 查看本地images nginx
+
+docker rmi 9ad401599ff2 删除本地images
 
 docker pull nginx:last
 docker stop b8697e34ff96 停止运行容器
@@ -200,6 +203,21 @@ ONBUILD
 ONBUILD [INSTRUCTION]
 如果一个镜像的dockerfile中含有这个指令, 则基于这个镜像创建新的镜像的时候,都会执行指令后的内容.
 ```
+
+### docker example micoserver
+cd microserver
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build 
+
+docker build -t micoserver:latest .
+或
+docker build -t micoserver:latest -f Dockerfile 指定路径
+
+docker run -t micoserver:latest 直接可以看log
+或
+docker run -d micoserver:latest
+docker ps -a|grep micoserver
+docker logs 0aeb7916e0d3
+
 
 
 

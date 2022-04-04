@@ -28,8 +28,7 @@ func main() {
 	//数据库初始化
 	db, err := gorm.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/microUser?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
-		log.Fatal(err)
-		return
+		log.Error(err)
 	}
 	log.Info("Connect Mysql")
 
@@ -50,7 +49,7 @@ func main() {
 	userService := service.NewUserService(rp)
 	userServer := new(handler.UserServer)
 	userServer.UserService = userService
-	pb.RegisterUserHandler(srv.Server(),userServer )
+	pb.RegisterUserHandler(srv.Server(),userServer)
 	if err != nil {
 		log.Fatal(err)
 		return

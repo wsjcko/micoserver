@@ -2,17 +2,17 @@ GOPATH:=$(shell go env GOPATH)
 
 .PHONY: init
 init:
-	@go get -u google.golang.org/protobuf/proto
-	@go install github.com/golang/protobuf/protoc-gen-go@latest
+	@go install google.golang.org/protobuf/proto
+	@go install github.com/gogo/protobuf/protoc-gen-gofast@latest
 	@go install github.com/asim/go-micro/cmd/protoc-gen-micro/v4@latest
 
 .PHONY: proto
 proto:
-	@protoc --proto_path=. --micro_out=. --go_out=:. proto/micoserver.proto
+	@protoc --proto_path=./proto/pb --micro_out=./protobuf/pb --gofast_out=./protobuf/pb proto/pb/*.proto
 
 .PHONY: update
 update:
-	@go get -u
+	@go get -u go-micro.dev/v4@latest
 
 .PHONY: tidy
 tidy:
@@ -20,12 +20,12 @@ tidy:
 
 .PHONY: build
 build:
-	@go build -o micoserver *.go
+	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build 
 
 .PHONY: test
 test:
 	@go test -v ./... -cover
 
-.PHONY: docker
+.PHONY: dockerBuild
 docker:
 	@docker build -t micoserver:latest .

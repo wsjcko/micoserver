@@ -52,9 +52,11 @@ func (u *UserRepository) FindUserByName(name string) (user *model.User, err erro
 func (u *UserRepository) UpdateUser(user *model.User) error {
 	return u.sqlDb.Model(user).Update(&user).Error
 }
+
 func (u *UserRepository) DeleteUserById(id int64) error {
 	return u.sqlDb.Where("id = ?", id).Delete(&model.User{}).Error
 }
+
 func (u *UserRepository) FindAll() (userAll []model.User, err error) {
 	return userAll, u.sqlDb.Find(&userAll).Error
 }
