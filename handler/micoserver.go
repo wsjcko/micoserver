@@ -7,7 +7,7 @@ import (
 
 	log "go-micro.dev/v4/logger"
 
-	pb "github.com/wsjcko/micoserver/proto/pb"
+	pb "github.com/wsjcko/micoserver/protobuf/pb"
 )
 
 type Micoserver struct{}

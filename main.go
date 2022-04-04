@@ -1,34 +1,37 @@
 package main
 
 import (
-	"micoserver/handler"
-	pb "micoserver/proto"
-
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/wsjcko/micoserver/domain/repository"
+	"github.com/wsjcko/micoserver/domain/service"
+	"github.com/wsjcko/micoserver/handler"
+	pb "github.com/wsjcko/micoserver/protobuf/pb"
 	"go-micro.dev/v4"
 	log "go-micro.dev/v4/logger"
 )
 
 var (
-	service = "micoserver"
-	version = "latest"
+	serviceName = "UserServer"
+	version     = "latest"
 )
 
 func main() {
 	// Create service
 	srv := micro.NewService(
-		micro.Name(service),
+		micro.Name(serviceName),
 		micro.Version(version),
 	)
 	srv.Init()
-	logger.Info("Create service")
+	log.Info("Create service")
 
 	//数据库初始化
-	db, err := gorm.Open("mysql", "root:root@tcp(127.0.0.1:3306)/microUser?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/microUser?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
-		logger.Fatal(err)
+		log.Fatal(err)
 		return
 	}
-	logger.Info("Connect Mysql")
+	log.Info("Connect Mysql")
 
 	defer db.Close()               //释放数据库连接资源
 	db.SingularTable(true)         //gorm创建表时，false:表添加s后缀
@@ -39,21 +42,24 @@ func main() {
 
 	//创建表
 	rp := repository.NewUserRepository(db)
-	rp.InitTable() //只执行一次
-	logger.Info("InitTable")
+	// rp.InitTable() //gorm 创建表 user 只需执行一次
+	log.Info("InitTable")
 
 	// Register handler
-	userService := mservice.NewUserService(rp)
-	pb.RegisterUserHandler(srv.Server(), new(handler.UserServer{UserSevice: userService}))
+	pb.RegisterMicoserverHandler(srv.Server(), new(handler.Micoserver))
+	userService := service.NewUserService(rp)
+	userServer := new(handler.UserServer)
+	userServer.UserService = userService
+	pb.RegisterUserHandler(srv.Server(),userServer )
 	if err != nil {
-		logger.Fatal(err)
+		log.Fatal(err)
 		return
 	}
-	logger.Info("Register handler")
+	log.Info("Register handler")
 
 	// Run service
 	if err := srv.Run(); err != nil {
 		log.Fatal(err)
 	}
-	logger.Info("Run service")
+	log.Info("Run service")
 }
