@@ -40,12 +40,14 @@ func (u *UserRepository) CreateUser(user *model.User) (int64, error) {
 }
 
 func (u *UserRepository) FindUserById(id int64) (user *model.User, err error) {
+	user = &model.User{}
 	err = u.sqlDb.First(user, id).Error
 	return user, err
 }
 
 func (u *UserRepository) FindUserByName(name string) (user *model.User, err error) {
-	err = u.sqlDb.Where("name = ?", name).Find(user).Error
+	user = &model.User{}
+	err = u.sqlDb.Where("user_name = ?", name).First(user).Error
 	return user, err
 }
 

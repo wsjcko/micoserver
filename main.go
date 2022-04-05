@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	serviceName = "UserServer"
+	serviceName = "micoserver"
 	version     = "latest"
 )
 
@@ -28,7 +28,7 @@ func main() {
 	//数据库初始化
 	db, err := gorm.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/microUser?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
-		log.Error(err)
+		log.Error("Connect Mysql ", err)
 	}
 	log.Info("Connect Mysql")
 
@@ -47,7 +47,7 @@ func main() {
 	// Register handler
 	err = pb.RegisterMicoserverHandler(srv.Server(), new(handler.Micoserver))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Register handler Call ", err)
 		return
 	}
 
@@ -55,14 +55,14 @@ func main() {
 	userServer.Init(service.NewUserService(rp))
 	err = pb.RegisterUserHandler(srv.Server(), userServer)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Register handler ", err)
 		return
 	}
 	log.Info("Register handler")
 
 	// Run service
 	if err := srv.Run(); err != nil {
-		log.Fatal(err)
+		log.Fatal("Run service ", err)
 	}
 	log.Info("Run service")
 }

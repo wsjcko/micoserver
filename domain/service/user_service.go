@@ -72,5 +72,5 @@ func (u *UserService) CheckPwd(userName string, pwd string) (isOk bool, err erro
 	if err != nil {
 		return false, err
 	}
-	return ValidatePassword(user.HashPassword, pwd)
+	return ValidatePassword(pwd, user.HashPassword)
 }
