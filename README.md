@@ -218,8 +218,10 @@ docker run -d micoserver:latest
 docker ps -a|grep micoserver
 docker logs 0aeb7916e0d3
 
-
-
+### consul 微服务注册中心和配置中心
+docker search --filter is-official=true --filter stars=3 consul
+docker pull consul
+docker run -d -p 8500:8500 consul:latest
 
 
 ### go module

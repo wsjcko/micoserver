@@ -45,11 +45,15 @@ func main() {
 	log.Info("InitTable")
 
 	// Register handler
-	pb.RegisterMicoserverHandler(srv.Server(), new(handler.Micoserver))
-	userService := service.NewUserService(rp)
+	err = pb.RegisterMicoserverHandler(srv.Server(), new(handler.Micoserver))
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	userServer := new(handler.UserServer)
-	userServer.UserService = userService
-	pb.RegisterUserHandler(srv.Server(),userServer)
+	userServer.Init(service.NewUserService(rp))
+	err = pb.RegisterUserHandler(srv.Server(), userServer)
 	if err != nil {
 		log.Fatal(err)
 		return

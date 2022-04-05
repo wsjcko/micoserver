@@ -11,6 +11,9 @@ type UserServer struct {
 	UserService service.IUserService
 }
 
+func (us *UserServer) Init(userService service.IUserService) {
+	us.UserService = userService
+}
 
 //注册
 func (us *UserServer) Register(ctx context.Context, req *pb.UserRegisterReq, ack *pb.UserRegisterAck) error {
