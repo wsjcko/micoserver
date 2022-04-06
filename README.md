@@ -19,6 +19,8 @@ go get -u -v google.golang.org/grpc
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@master
 
 ### 指定相对于$GOPATH的目录路径，快速创建一个新服务。
+micro new service github.com/wsjcko/micoserver
+
 micro new service $GOPATH/michserver
 code michserver
 go mod init
@@ -126,6 +128,8 @@ docker run -p 6379:6379 --name gRedis  -v /mnt/f/Docker/images/redis/redis.conf:
 
 docker logs -f  -t --tail 100 gRedis
 docker exec -it  a28ea788bfc8 /bin/bash
+
+docker rename 7746c468aade consul   修改容器名
 
 
 RUN 镜像操作指令, 指定镜像被构建时要运行的命令

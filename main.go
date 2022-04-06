@@ -21,6 +21,10 @@ func main() {
 	srv := micro.NewService(
 		micro.Name(serviceName),
 		micro.Version(version),
+		// micro.Address(addr string)
+		// micro.Transport(t transport.Transport)
+		// micro.Registry(r registry.Registry)
+		// micro.RegisterHandler(s server.Server, h interface{}, opts ...server.HandlerOption) //pb.RegisterMicoserverHandler 实现了
 	)
 	srv.Init()
 	log.Info("Create service")

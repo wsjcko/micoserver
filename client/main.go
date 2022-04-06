@@ -19,6 +19,11 @@ func main() {
 	clientService.Init()
 	ctx := context.TODO()
 
+	if err := clientService.Run(); err != nil {
+		log.Fatal("Run service ", err)
+	}
+	log.Info("Run service")
+
 	//测试通信
 	micoService := pb.NewMicoserverService("micoserver", clientService.Client())
 	res, err := micoService.Call(ctx, &pb.CallRequest{Name: "wuxue"})
@@ -65,4 +70,5 @@ func main() {
 		return
 	}
 	log.Info(userInfoRes.GetFirstName(), userInfoRes.GetUserName(), userInfoRes.GetId())
+
 }
